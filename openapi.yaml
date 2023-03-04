@@ -1,0 +1,72 @@
+openapi: 3.0.3
+info:
+  title: Parking Lot 
+  version: 1.0.11
+servers:
+  - url: http://localhost:8000/
+tags:
+  - name: parking lot
+    description: Nearest parking lot description
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+
+paths:
+  /parkingLot/{currentLocation}:
+    get:
+      tags:
+        - parking lot
+      summary: Find details of parking lot near to current location
+      description: Returns parking spot availabilty, image of parking lot, parking limit and parking charges.
+      operationId: getParkingLotByCurrentLocation
+      parameters:
+        - name: currentLocation
+          in: path
+          description: parking lot details to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParkingLot'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ParkingLot'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Parking lot details not found
+    
+components:
+  schemas:
+    ParkingLot:
+      type: object
+      properties:
+        parking_lot_name:
+          type: string
+          example: "Tebeau Hall"
+        number_of_empty_parking_lots:
+          type: integer
+          format: int64
+          example: 20
+        total_number_of_parking_lots:
+          type: integer
+          format: int64
+          example: 56
+        timestamp:
+          type: string
+          example: "2022-11-11T02:10:15.429085"
+        image_url:
+          type: string
+          example: "https://s3-us-west-2.amazonaws.com/detectionlog/prediction_images/2022-11-11T02:10:15.429085_3j9p928.jpg"
+        parking_lot_time_limit:
+          type: string
+          example: "2 Hr Parking [ 8.30 am to 5.30 am]"
+        parking_charges:
+          type: string
+          example: "Pay at Pay Station [ 2$ per Hr ]"
+    
